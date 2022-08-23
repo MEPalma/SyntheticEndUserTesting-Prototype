@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "io.freefair.aspectj" version "6.4.1"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    implementation 'org.aspectj:aspectjrt:1.9.9.1'
+
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.7.Final'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
+
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.2'
+
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.5'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+}
+
+sourceSets.main.aspectj.srcDir 'src/main/java'
+sourceSets.main.java.srcDirs = files()
+
+task backend(type:JavaExec) {
+    mainClass.set("backend.Main")
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task frontend(type:JavaExec) {
+    mainClass.set("gui.frontend.Main")
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task replayAgent(type: JavaExec) {
+    mainClass.set("agent.ReplayAgentRunner")
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task randomAgent(type: JavaExec) {
+    mainClass.set("agent.RandomAgentRunner")
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task frequencyAgent(type: JavaExec) {
+    mainClass.set("agent.FrequencyAgentRunner")
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+application {
+    mainClass = 'app.App'
+}
+
+run {
+    args = []
+}
+
+test {
+    useJUnitPlatform()
+}
